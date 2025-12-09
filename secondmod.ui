@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SecondMod</class>
+ <widget class="QMainWindow" name="SecondMod">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1600</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1" colspan="4">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>Начальные параметры:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="3">
+     <widget class="QLabel" name="label_18">
+      <property name="text">
+       <string>Z = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="3" colspan="3">
+     <widget class="QLabel" name="label_12">
+      <property name="text">
+       <string>Вторая точка назначения:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="3">
+     <widget class="QLabel" name="label_16">
+      <property name="text">
+       <string>X = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="4">
+     <widget class="QLineEdit" name="lineEditNewZ2_mod2"/>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_13">
+      <property name="text">
+       <string>X = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_14">
+      <property name="text">
+       <string>Y = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="1" colspan="5">
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="text">
+       <string>Запуск модуляции. Режим №2.</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="4">
+     <widget class="QLineEdit" name="lineEditNewX2_mod2"/>
+    </item>
+    <item row="12" column="1" colspan="5">
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>Назал</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="3">
+     <widget class="QLabel" name="label_17">
+      <property name="text">
+       <string>Y = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="lineEditNewX_mod2"/>
+    </item>
+    <item row="7" column="4">
+     <widget class="QLineEdit" name="lineEditNewY2_mod2"/>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLineEdit" name="lineEditNewY_mod2"/>
+    </item>
+    <item row="8" column="1">
+     <widget class="QLineEdit" name="lineEditNewZ_mod2"/>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="label_15">
+      <property name="text">
+       <string>Z = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLabel" name="label_11">
+      <property name="text">
+       <string>Первая точка назначения:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1" colspan="5">
+     <widget class="QLineEdit" name="lineEditX_mod2"/>
+    </item>
+    <item row="2" column="1" colspan="5">
+     <widget class="QLineEdit" name="lineEditY_mod2"/>
+    </item>
+    <item row="3" column="1" colspan="5">
+     <widget class="QLineEdit" name="lineEditZ_mod2"/>
+    </item>
+    <item row="4" column="1" colspan="5">
+     <widget class="QLineEdit" name="lineEditV_mod2"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>X = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Y = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Z = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>V = </string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1600</width>
+     <height>18</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FirstMod</class>
+ <widget class="QMainWindow" name="FirstMod">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1600</width>
+    <height>900</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>X = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="lineEdit_X_start"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Y =</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_Y_start"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>Z = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="lineEdit_Z_start"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLabel" name="label_7">
+      <property name="text">
+       <string>V = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEdit_V_target"/>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="label_12">
+      <property name="text">
+       <string>X = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="lineEdit_X_end"/>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLabel" name="label_13">
+      <property name="text">
+       <string>Y = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="lineEdit_Y_end"/>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLabel" name="label_14">
+      <property name="text">
+       <string>Z = </string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QLineEdit" name="lineEdit_Z_end"/>
+    </item>
+    <item row="0" column="0" rowspan="4">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Начальные параметры:      </string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0" rowspan="3">
+     <widget class="QLabel" name="label_11">
+      <property name="text">
+       <string>Точка назначения:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0" colspan="3">
+     <widget class="QPushButton" name="btnStart">
+      <property name="text">
+       <string>Построить 3D визуализацию</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0" colspan="3">
+     <widget class="QPushButton" name="btnMod3">
+      <property name="text">
+       <string>Построить 2D графики</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0" colspan="3">
+     <widget class="QPushButton" name="btnBack">
+      <property name="text">
+       <string>Назад</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1600</width>
+     <height>18</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
