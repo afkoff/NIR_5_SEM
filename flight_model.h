@@ -71,8 +71,6 @@ public:
         // Защита от деления на ноль и малых скоростей
         if (std::abs(V) < 1.0) V = 1.0;
         double c_th = std::cos(theta);
-        // Защита от "мертвой петли" в математике (деление на cos 90)
-        if (std::abs(c_th) < 0.05) c_th = (c_th >= 0) ? 0.05 : -0.05;
 
 
         // Рассчитываем необходимые управляющие сигналы U
@@ -91,10 +89,10 @@ public:
         double err_H = mission.targetY - Y;
 
         // Лимит вертикальной скорости теперь зависит от полной скорости.
-        // Мы разрешаем дрону использовать почти всю свою скорость для набора высоты (до 86%).
-        double max_climb_rate = mission.targetV * 0.86;
+        // Мы разрешаем дрону использовать почти всю свою скорость для набора высоты (до 98%).
+        double max_climb_rate = mission.targetV * 0.98;
         double desired_Vy = std::max(-max_climb_rate, std::min(err_H, max_climb_rate));
-        double u_nya = Kd_h * (Kp_h * desired_Vy - (V * std::sin(theta))) + std::cos(theta);
+        double u_nya = Kd_h * (Kp_h * desired_Vy - (V * std::sin(theta))) + 1 + std::cos(theta);
 
         // Лимиты перегрузки
         u_nya = std::max(-11.0, std::min(u_nya, 11.0));
