@@ -39,8 +39,8 @@ class AircraftModel {
     double Kd_h = 1;
 
     // Для курса (Боковое движение)
-    double Kp_psi = 0.85;
-    double Kp_gamma = 0.85;
+    double Kp_psi = 0.1;
+    double Kp_gamma = 0.1;
 
     MissionParams mission;
 
