@@ -50,7 +50,7 @@ FirstMod2::~FirstMod2()
 
 // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
 
-void createSphere(Qt3DCore::QEntity *root, QVector3D pos, QColor color, float radius) {
+static void createSphere(Qt3DCore::QEntity *root, QVector3D pos, QColor color, float radius) {
     Qt3DCore::QEntity *entity = new Qt3DCore::QEntity(root);
     Qt3DExtras::QSphereMesh *mesh = new Qt3DExtras::QSphereMesh();
     mesh->setRadius(radius);
@@ -67,7 +67,7 @@ void createSphere(Qt3DCore::QEntity *root, QVector3D pos, QColor color, float ra
     entity->addComponent(trans);
 }
 
-void createCylinderBetweenPoints(Qt3DCore::QEntity *root, QVector3D start, QVector3D end, QColor color, float thickness) {
+static void createCylinderBetweenPoints(Qt3DCore::QEntity *root, QVector3D start, QVector3D end, QColor color, float thickness) {
     Qt3DCore::QEntity *entity = new Qt3DCore::QEntity(root);
     QVector3D diff = end - start;
     float length = diff.length();
@@ -92,7 +92,7 @@ void createCylinderBetweenPoints(Qt3DCore::QEntity *root, QVector3D start, QVect
     entity->addComponent(trans);
 }
 
-void createLabel(Qt3DCore::QEntity *root, QVector3D pos, QString text, QColor color, float scale) {
+static void createLabel(Qt3DCore::QEntity *root, QVector3D pos, QString text, QColor color, float scale) {
     Qt3DCore::QEntity *textEntity = new Qt3DCore::QEntity(root);
     Qt3DExtras::QExtrudedTextMesh *textMesh = new Qt3DExtras::QExtrudedTextMesh();
     textMesh->setText(text);
@@ -112,7 +112,7 @@ void createLabel(Qt3DCore::QEntity *root, QVector3D pos, QString text, QColor co
 }
 
 // АДАПТИВНАЯ ОБЪЕМНАЯ СЕТКА (LATTICE)
-void createVolumetricGridAndLabels(Qt3DCore::QEntity *root, float maxSize) {
+static void createVolumetricGridAndLabels(Qt3DCore::QEntity *root, float maxSize) {
     // 1. АВТОМАТИЧЕСКИЙ РАСЧЕТ ШАГА
     // Целимся в 5-6 делений, чтобы не перегружать сцену тысячами линий
     float targetStep = maxSize / 6.0f;
@@ -179,11 +179,25 @@ void FirstMod2::runSimulation(MissionParams params)
     double dist = std::sqrt(dx*dx + dy*dy + dz*dz);
     double dist_h = std::sqrt(dx*dx + dz*dz);
 
-    x[4] = std::atan2(dy, dist_h);
-    x[5] = std::atan2(-dz, dx);
-    for(int i=6; i<13; ++i) x[i] = 0;
+    // Расчет идеального математического угла
+    double target_theta = std::atan2(dy, dist_h);
 
-    double sim_time = (dist / params.targetV) * 1.3;
+    // ОГРАНИЧЕНИЕ (CLAMP)
+    // Не даем углу стать ровно 90 градусов (PI/2), отступаем на капельку
+    double max_pitch = 89.0 * M_PI / 180.0; // 89 градусов в радианах
+
+    if (target_theta > max_pitch) target_theta = max_pitch;
+    if (target_theta < -max_pitch) target_theta = -max_pitch;
+
+    x[4] = target_theta;
+    x[5] = std::atan2(-dz, dx);
+    x[6] = std::sin(target_theta);
+    x[7] = std::cos(target_theta);
+    for(int i=8; i<13; ++i) x[i] = 0;
+
+    x[3] = params.targetV;
+
+    double sim_time = (dist / params.targetV) * 5;
 
     std::vector<double> times;
     std::vector<state_type> states;

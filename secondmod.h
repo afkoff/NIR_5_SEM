@@ -20,6 +20,8 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_on_btn2D_clicked_clicked();
+
 private:
     Ui::SecondMod *ui;
     QMainWindow *window;

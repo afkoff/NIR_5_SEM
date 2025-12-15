@@ -88,11 +88,25 @@ void FirstMod3::runSimulationAndPlot(MissionParams params)
     double dist = std::sqrt(dx*dx + dy*dy + dz*dz);
     double dist_h = std::sqrt(dx*dx + dz*dz);
 
-    x[4] = std::atan2(dy, dist_h);
-    x[5] = std::atan2(-dz, dx);
-    for(int i=6; i<13; ++i) x[i] = 0;
+    // Расчет идеального математического угла
+    double target_theta = std::atan2(dy, dist_h);
 
-    double sim_time = (dist / params.targetV) * 1.1;
+    // ОГРАНИЧЕНИЕ (CLAMP)
+    // Не даем углу стать ровно 90 градусов (PI/2), отступаем на капельку
+    double max_pitch = 89.0 * M_PI / 180.0; // 89 градусов в радианах
+
+    if (target_theta > max_pitch) target_theta = max_pitch;
+    if (target_theta < -max_pitch) target_theta = -max_pitch;
+
+    x[4] = target_theta;
+    x[5] = std::atan2(-dz, dx);
+    x[6] = std::sin(target_theta);
+    x[7] = std::cos(target_theta);
+    for(int i=8; i<13; ++i) x[i] = 0;
+
+    x[3] = params.targetV;
+
+    double sim_time = (dist / params.targetV) * 5;
 
     std::vector<double> times;
     std::vector<state_type> states;

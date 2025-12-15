@@ -16,6 +16,7 @@ SOURCES += \
     mainwindow.cpp \
     secondmod.cpp \
     secondmod2.cpp \
+    secondmod3.cpp \
     secondwindow.cpp
 
 HEADERS += \
@@ -26,6 +27,7 @@ HEADERS += \
     mainwindow.h \
     secondmod.h \
     secondmod2.h \
+    secondmod3.h \
     secondwindow.h
 
 FORMS += \
@@ -35,6 +37,7 @@ FORMS += \
     mainwindow.ui \
     secondmod.ui \
     secondmod2.ui \
+    secondmod3.ui \
     secondwindow.ui
 
 qnx: target.path = /tmp/$${TARGET}/bin

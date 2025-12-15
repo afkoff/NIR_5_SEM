@@ -14,18 +14,25 @@ struct MissionParams {
     double targetV;
 };
 
+struct MissionParamsMode2 {
+    double startX, startY, startZ;
+    double p1X, p1Y, p1Z; // Первая промежуточная точка
+    double p2X, p2Y, p2Z; // Конечная точка
+    double targetV;
+};
+
 class AircraftModel {
     // Константы ЛА
     double g = 9.81;
-    double T_nxa = 1;   // Постоянная времени
-    double T_nya = 1;   // Постоянная времени
-    double xi_nya = 0.5;  // Демпфирование
-    double T_nza = 1;   // Постоянная времени
-    double T_gamma = 1; // Постоянная времени
+    double T_nxa = 0.01;   // Постоянная времени
+    double T_nya = 0.01;   // Постоянная времени
+    double xi_nya = 0.9;  // Демпфирование
+    double T_nza = 0.01;   // Постоянная времени
+    double T_gamma = 0.01; // Постоянная времени
 
     // Параметры ПИД-регуляторов (коэффициенты подобраны эмпирически)
     // Для скорости
-    double Kp_v = 1;
+    double Kp_v = 5;
 
     // Для высоты (простой ПД регулятор)
     double Kp_h = 1;
@@ -67,28 +74,30 @@ public:
         // Защита от "мертвой петли" в математике (деление на cos 90)
         if (std::abs(c_th) < 0.05) c_th = (c_th >= 0) ? 0.05 : -0.05;
 
+
         // Рассчитываем необходимые управляющие сигналы U
 
         // 1. Управление скоростью
         // U_nxa = (V_zad - V_tek) * K
         double err_V = mission.targetV - V;
-        double u_nxa = Kp_v * err_V;
+        double u_nxa = Kp_v * err_V + std::sin(theta);
 
         // Ограничение тяги
-        if (u_nxa > 3.0) u_nxa = 3.0;
-        if (u_nxa < -3.0) u_nxa = -3.0;
+        if (u_nxa > 11.0) u_nxa = 11.0;
+        if (u_nxa < -11.0) u_nxa = -11.0;
 
 
         // 2. Управление высотой -> Выход U_nya
         double err_H = mission.targetY - Y;
 
-        // Ограничиваем желаемую вертикальную скорость
-        // Дрон не должен хотеть набирать высоту быстрее 50 м/с
-        double desired_Vy = std::max(-45.0, std::min(err_H * 0.5, 45.0));
+        // Лимит вертикальной скорости теперь зависит от полной скорости.
+        // Мы разрешаем дрону использовать почти всю свою скорость для набора высоты (до 86%).
+        double max_climb_rate = mission.targetV * 0.86;
+        double desired_Vy = std::max(-max_climb_rate, std::min(err_H, max_climb_rate));
+        double u_nya = Kd_h * (Kp_h * desired_Vy - (V * std::sin(theta))) + std::cos(theta);
 
-        double u_nya = Kd_h * (Kp_h * desired_Vy - (V * std::sin(theta))) + 1;
         // Лимиты перегрузки
-        u_nya = std::max(-3.0, std::min(u_nya, 3.0));
+        u_nya = std::max(-11.0, std::min(u_nya, 11.0));
 
 
         // 3. Управление курсом -> Выход U_gamma
@@ -98,9 +107,6 @@ public:
         double target_psi = std::atan2(-dz, dx);
 
         double err_psi = target_psi - psi;
-        // Нормализация угла ошибки (-PI до PI)
-        while (err_psi > M_PI) err_psi -= 2 * M_PI;
-        while (err_psi < -M_PI) err_psi += 2 * M_PI;
 
         // ПИД курса выдает заданный крен (gamma_zad)
         double gamma_zad = Kp_psi * err_psi;

@@ -16,11 +16,11 @@ FirstMod::FirstMod(QWidget *parent)
     ui->lineEdit_X_start->setText("0");
     ui->lineEdit_Y_start->setText("0");
     ui->lineEdit_Z_start->setText("0");
-    ui->lineEdit_V_target->setText("0");
+    ui->lineEdit_V_target->setText("60");
 
-    ui->lineEdit_X_end->setText("0");
-    ui->lineEdit_Y_end->setText("0");
-    ui->lineEdit_Z_end->setText("0");
+    ui->lineEdit_X_end->setText("1000");
+    ui->lineEdit_Y_end->setText("1000");
+    ui->lineEdit_Z_end->setText("1000");
 }
 
 FirstMod::~FirstMod()
