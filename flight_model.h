@@ -27,8 +27,8 @@ class AircraftModel {
     double T_nxa = 0.01;   // Постоянная времени
     double T_nya = 0.01;   // Постоянная времени
     double xi_nya = 0.9;  // Демпфирование
-    double T_nza = 0.01;   // Постоянная времени
-    double T_gamma = 0.01; // Постоянная времени
+    double T_nza = 0.1;   // Постоянная времени
+    double T_gamma = 0.1; // Постоянная времени
 
     // Параметры ПИД-регуляторов (коэффициенты подобраны эмпирически)
     // Для скорости
@@ -39,8 +39,8 @@ class AircraftModel {
     double Kd_h = 1;
 
     // Для курса (Боковое движение)
-    double Kp_psi = 1;
-    double Kp_gamma = 1;
+    double Kp_psi = 0.85;
+    double Kp_gamma = 0.85;
 
     MissionParams mission;
 
@@ -78,7 +78,7 @@ public:
         // 1. Управление скоростью
         // U_nxa = (V_zad - V_tek) * K
         double err_V = mission.targetV - V;
-        double u_nxa = Kp_v * err_V + std::sin(theta);
+        double u_nxa = Kp_v * err_V;
 
         // Ограничение тяги
         if (u_nxa > 11.0) u_nxa = 11.0;
@@ -88,11 +88,18 @@ public:
         // 2. Управление высотой -> Выход U_nya
         double err_H = mission.targetY - Y;
 
+        double v_ref = 60.0;
+
+        double speed_scaling = mission.targetV / v_ref;
+
+        if (speed_scaling < 1) speed_scaling = 0.93;
+        if (speed_scaling >= 1) speed_scaling = 0.98;
+
         // Лимит вертикальной скорости теперь зависит от полной скорости.
         // Мы разрешаем дрону использовать почти всю свою скорость для набора высоты (до 98%).
-        double max_climb_rate = mission.targetV * 0.98;
+        double max_climb_rate = mission.targetV * speed_scaling;
         double desired_Vy = std::max(-max_climb_rate, std::min(err_H, max_climb_rate));
-        double u_nya = Kd_h * (Kp_h * desired_Vy - (V * std::sin(theta))) + 1 + std::cos(theta);
+        double u_nya = Kd_h * (Kp_h * desired_Vy - (V * std::sin(theta))) + 1;
 
         // Лимиты перегрузки
         u_nya = std::max(-11.0, std::min(u_nya, 11.0));
