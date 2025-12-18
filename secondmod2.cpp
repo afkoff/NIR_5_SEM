@@ -179,23 +179,16 @@ void SecondMod2::runSimulation(MissionParamsMode2 params)
     // Расчет идеального математического угла
     double target_theta1 = std::atan2(dy1, dist1_h);
 
-    // ОГРАНИЧЕНИЕ (CLAMP)
-    // Не даем углу стать ровно 90 градусов (PI/2), отступаем на капельку
-    double max_pitch1 = 89.0 * M_PI / 180.0; // 89 градусов в радианах
-
-    if (target_theta1 > max_pitch1) target_theta1 = max_pitch1;
-    if (target_theta1 < -max_pitch1) target_theta1 = -max_pitch1;
-
     x[4] = target_theta1;
     x[5] = std::atan2(-dz1, dx1);
     x[6] = std::sin(target_theta1);
     x[7] = std::cos(target_theta1);
     for(int i=8; i<13; ++i) x[i] = 0;
 
-    x[3] = params.targetV;
+    x[3] = 0;
 
     // Время с запасом
-    double time1 = dist1 / params.targetV * 10;
+    double time1 = dist1 / params.targetV * 1.5;
 
     // Модель для участка 1
     MissionParams leg1;
@@ -235,13 +228,6 @@ void SecondMod2::runSimulation(MissionParamsMode2 params)
     // Расчет идеального математического угла
     double target_theta2 = std::atan2(dy2, dist2_h);
 
-    // ОГРАНИЧЕНИЕ (CLAMP)
-    // Не даем углу стать ровно 90 градусов (PI/2), отступаем на капельку
-    double max_pitch2 = 89.0 * M_PI / 180.0; // 89 градусов в радианах
-
-    if (target_theta2 > max_pitch2) target_theta2 = max_pitch2;
-    if (target_theta2 < -max_pitch2) target_theta2 = -max_pitch2;
-
     x2[4] = target_theta2;
     x2[5] = std::atan2(-dz2, dx2);    // Новый курс (psi)
     x2[6] = std::sin(target_theta2);
@@ -253,7 +239,7 @@ void SecondMod2::runSimulation(MissionParamsMode2 params)
     // Восстанавливаем целевую скорость (на всякий случай)
     x2[3] = params.targetV;
 
-    double time2 = dist2 / params.targetV * 10;
+    double time2 = dist2 / params.targetV * 1.5;
 
     // Модель для участка 2
     MissionParams leg2;

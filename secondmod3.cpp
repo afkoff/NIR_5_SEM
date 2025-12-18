@@ -109,25 +109,18 @@ void SecondMod3::runSimulationAndPlot(MissionParamsMode2 params)
     // Расчет идеального математического угла
     double target_theta1 = std::atan2(dy1, dist1_h);
 
-    // ОГРАНИЧЕНИЕ (CLAMP)
-    // Не даем углу стать ровно 90 градусов (PI/2), отступаем на капельку
-    double max_pitch1 = 89.0 * M_PI / 180.0; // 89 градусов в радианах
-
-    if (target_theta1 > max_pitch1) target_theta1 = max_pitch1;
-    if (target_theta1 < -max_pitch1) target_theta1 = -max_pitch1;
-
     x[4] = std::atan2(dy1, dist1_h);
     x[5] = std::atan2(-dz1, dx1);
     x[6] = std::sin(target_theta1);
     x[7] = std::cos(target_theta1);
     for(int i=8; i<13; ++i) x[i] = 0;
-    x[3] = params.targetV;
+    x[3] = 0;
 
     MissionParams leg1;
     leg1.targetX = params.p1X; leg1.targetY = params.p1Y; leg1.targetZ = params.p1Z;
     leg1.targetV = params.targetV;
 
-    double time1 = (dist1 / params.targetV) * 10;
+    double time1 = (dist1 / params.targetV) * 1.5;
 
     AircraftModel model1(leg1);
     integrate_adaptive(make_controlled(1E-3, 1E-3, stepper), model1, x, 0.0, time1, 0.1, Observer(times, states));
@@ -163,13 +156,6 @@ void SecondMod3::runSimulationAndPlot(MissionParamsMode2 params)
     // Расчет идеального математического угла
     double target_theta2 = std::atan2(dy2, dist2_h);
 
-    // ОГРАНИЧЕНИЕ (CLAMP)
-    // Не даем углу стать ровно 90 градусов (PI/2), отступаем на капельку
-    double max_pitch2 = 89.0 * M_PI / 180.0; // 89 градусов в радианах
-
-    if (target_theta2 > max_pitch2) target_theta2 = max_pitch2;
-    if (target_theta2 < -max_pitch2) target_theta2 = -max_pitch2;
-
     x2[4] = target_theta2;
     x2[5] = std::atan2(-dz2, dx2);    // Новый курс (psi)
     x2[6] = std::sin(target_theta2);
@@ -181,7 +167,7 @@ void SecondMod3::runSimulationAndPlot(MissionParamsMode2 params)
     // Восстанавливаем целевую скорость (на всякий случай)
     x2[3] = params.targetV;
 
-    double time2 = (dist2 / params.targetV) * 10;
+    double time2 = (dist2 / params.targetV) * 1.5;
 
     AircraftModel model2(leg2);
     integrate_adaptive(make_controlled(1E-3, 1E-3, stepper), model2, x2, currentTime, currentTime + time2, 0.1, Observer(times, states));
